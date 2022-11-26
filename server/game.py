@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from threading import Lock, Thread
 from queue import Queue, LifoQueue, Empty, Full
-from time import time
+from time import time, strftime, localtime
 from overcooked_ai_py.mdp.overcooked_mdp import OvercookedGridworld
 from overcooked_ai_py.mdp.overcooked_env import OvercookedEnv
 from overcooked_ai_py.mdp.actions import Action, Direction
@@ -517,15 +517,18 @@ class OvercookedGame(Game):
         return trajectories
 
     def _create_trajectory_filename(self):
-        time_secs = time()
-        milis_timestamp = str(int(time_secs*1000))
-        secs_timestamp = str(int(time_secs))
+        # time_secs = time()
+        YMDHM =  strftime('%Y%m%d%H%M',localtime()) # wanghm
+        # milis_timestamp = str(int(time_secs*1000))
+        # secs_timestamp = str(int(time_secs))
         layout_name = self.curr_layout
         #TODO: add proper templating if there will be more variables
-        filename = self.filename_template.replace("{millis_timestamp}", milis_timestamp)
-        filename = filename.replace("{secs_timestamp}", secs_timestamp)
+        filename = self.filename_template.replace("{millis_timestamp}", YMDHM)
+        # filename = self.filename_template.replace("{millis_timestamp}", milis_timestamp)
+        # filename = filename.replace("{secs_timestamp}", "secs_timestamp")
         filename = filename.replace("{layout_name}", layout_name)
         filename = filename + ".json"
+        # print(filename)
         return filename
 
     def get_data(self):
